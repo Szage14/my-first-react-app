@@ -1,13 +1,52 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:1337/api/auth/local', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          identifier: username,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('Login successful:', data);
+        // Store user data and JWT in local storage
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('jwt', data.jwt);
+        navigate('/dashboard');
+      } else {
+        setError(data.message || 'Login failed');
+        console.error('Login failed:', data);
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+      console.error('An error occurred:', error);
+    }
+  };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-100">
+    <div className="flex items-center justify-center min-h-screen bg-base-100 mb-16">
       <div className="p-6 max-w-sm w-full bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Login</h2>
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="mb-4">
             <label className="block text-neutral text-sm font-bold mb-2" htmlFor="username">
               Username
@@ -17,6 +56,8 @@ export default function Login() {
               id="username"
               type="text"
               placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
             />
           </div>
           <div className="mb-4">
@@ -28,6 +69,8 @@ export default function Login() {
               id="password"
               type={showPassword ? "text" : "password"}
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <div className="mt-2">
               <label className="inline-flex items-center">
@@ -41,10 +84,11 @@ export default function Login() {
               </label>
             </div>
           </div>
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
           <div className="flex items-center justify-center">
             <button
               className="btn btn-primary w-full"
-              type="button"
+              type="submit"
             >
               Login
             </button>
