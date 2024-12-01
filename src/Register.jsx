@@ -4,7 +4,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-100">
+    <div className="flex items-center justify-center min-h-screen bg-base-100 mb-16">
       <div className="p-6 max-w-sm w-full bg-white rounded-lg shadow-md">
         <h2 className="text-2xl font-bold mb-4">Register</h2>
         <form>
