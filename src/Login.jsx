@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
-  const [username, setUsername] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -19,7 +19,7 @@ export default function Login() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          identifier: username,
+          identifier,
           password,
         }),
       });
@@ -48,16 +48,16 @@ export default function Login() {
         <h2 className="text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label className="block text-neutral text-sm font-bold mb-2" htmlFor="username">
-              Username
+            <label className="block text-neutral text-sm font-bold mb-2" htmlFor="identifier">
+              Username or Email
             </label>
             <input
               className="input input-bordered w-full"
-              id="username"
+              id="identifier"
               type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Username or Email"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
             />
           </div>
           <div className="mb-4">
