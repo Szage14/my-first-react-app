@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -8,6 +9,7 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -37,13 +39,25 @@ export default function Register() {
       if (response.ok) {
         setSuccess('Registration successful!');
         console.log('Registration successful:', data);
+        // Delay the redirection to the login page
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000); // 2 seconds delay
       } else {
         setError(data.message || 'Registration failed');
         console.error('Registration failed:', data);
+        // Delay the refresh of the registration component
+        setTimeout(() => {
+          navigate('/register', { replace: true });
+        }, 2000); // 2 seconds delay
       }
     } catch (error) {
       setError('An error occurred. Please try again.');
       console.error('An error occurred:', error);
+      // Delay the refresh of the registration component
+      setTimeout(() => {
+        navigate('/register', { replace: true });
+      }, 2000); // 2 seconds delay
     }
   };
 
@@ -131,7 +145,7 @@ export default function Register() {
           )}
           <div className="flex items-center justify-center">
             <button
-              className="btn btn-primary w-full"
+              className="btn btn-secondary w-full"
               type="submit"
             >
               Register
@@ -140,7 +154,7 @@ export default function Register() {
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-neutral">
-            Already have an account? <a href="/login" className="textarea-ghost"><b>Login</b></a>
+            Already have an account? <a href="/login" className="texarea-ghost"><b>Login</b></a>
           </p>
         </div>
       </div>

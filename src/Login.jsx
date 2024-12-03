@@ -31,14 +31,29 @@ export default function Login() {
         // Store user data and JWT in local storage
         localStorage.setItem('user', JSON.stringify(data.user));
         localStorage.setItem('jwt', data.jwt);
-        navigate('/dashboard');
+        // Redirect to dashboard with state indicating successful login
+        navigate('/dashboard', { state: { fromLogin: true } });
       } else {
-        setError(data.message || 'Login failed');
+        // Handle specific error messages
+        if (data.message && data.message[0] && data.message[0].messages && data.message[0].messages[0]) {
+          const errorMessage = data.message[0].messages[0].message;
+          setError(errorMessage);
+        } else {
+          setError('Login failed');
+        }
         console.error('Login failed:', data);
+        // Clear the error message after 3 seconds
+        setTimeout(() => {
+          setError('');
+        }, 3000);
       }
     } catch (error) {
       setError('An error occurred. Please try again.');
       console.error('An error occurred:', error);
+      // Clear the error message after 3 seconds
+      setTimeout(() => {
+        setError('');
+      }, 3000);
     }
   };
 
@@ -93,7 +108,7 @@ export default function Login() {
           )}
           <div className="flex items-center justify-center">
             <button
-              className="btn btn-primary w-full"
+              className="btn btn-secondary w-full"
               type="submit"
             >
               Login

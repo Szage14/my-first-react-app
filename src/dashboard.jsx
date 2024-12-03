@@ -1,22 +1,31 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function Dashboard() {
   const [user, setUser] = useState({
     username: '',
     email: '',
   });
+  const [showToast, setShowToast] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Fetch user data from local storage or API
     const userData = JSON.parse(localStorage.getItem('user'));
     if (userData) {
       setUser(userData);
+      // Show toast notification if redirected from login
+      if (location.state && location.state.fromLogin) {
+        setShowToast(true);
+        setTimeout(() => {
+          setShowToast(false);
+        }, 3000); // Hide toast after 3 seconds
+      }
     } else {
       navigate('/login');
     }
-  }, [navigate]);
+  }, [navigate, location]);
 
   const handleLogout = () => {
     // Clear user data and JWT from local storage
@@ -28,6 +37,13 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-base-100">
+      {showToast && (
+        <div className="toast toast-top toast-center">
+          <div className="alert alert-success">
+            <span>Login successful!</span>
+          </div>
+        </div>
+      )}
       <div className="p-6 max-w-4xl w-full bg-white rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-4xl font-bold">Dashboard</h1>
