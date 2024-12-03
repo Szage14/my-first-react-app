@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Line } from 'react-chartjs-2';
+import 'chart.js/auto';
 
 export default function Dashboard() {
   const [user, setUser] = useState({
@@ -35,6 +37,19 @@ export default function Dashboard() {
     navigate('/login');
   };
 
+  const data = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+      {
+        label: 'Sales',
+        data: [65, 59, 80, 81, 56, 55, 40],
+        fill: false,
+        backgroundColor: 'rgba(75,192,192,0.4)',
+        borderColor: 'rgba(75,192,192,1)',
+      },
+    ],
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-base-100">
       {showToast && (
@@ -44,7 +59,7 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-      <div className="p-6 max-w-4xl w-full bg-white rounded-lg shadow-md">
+      <div className="p-12 max-w-6xl w-full bg-white rounded-lg shadow-md">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-4xl font-bold">Dashboard</h1>
           <button className="btn btn-secondary" onClick={handleLogout}>
@@ -56,29 +71,28 @@ export default function Dashboard() {
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-base-200 p-4 rounded-lg shadow">
-            <h2 className="text-2xl font-bold mb-2">Profile</h2>
-            <p className="text-neutral mb-2">Username: {user.username}</p>
-            <p className="text-neutral mb-2">Email: {user.email}</p>
+            <h2 className="text-2xl font-bold mb-2 text-aqua">Profile</h2>
+            <p className="text-aqua mb-2">Username: {user.username}</p>
+            <p className="text-aqua mb-2">Email: {user.email}</p>
           </div>
           <div className="bg-base-200 p-4 rounded-lg shadow">
             <h2 className="text-2xl font-bold mb-2">Statistics</h2>
-            <p className="text-neutral mb-2">Sales: $10,000</p>
-            <p className="text-neutral mb-2">Customers: 200</p>
+            <Line data={data} />
           </div>
           <div className="bg-base-200 p-4 rounded-lg shadow">
-            <h2 className="text-2xl font-bold mb-2">Tasks</h2>
-            <ul className="list-disc list-inside text-neutral">
-              <li>Review sales report</li>
-              <li>Update inventory</li>
-              <li>Schedule staff meeting</li>
+            <h2 className="text-2xl font-bold mb-2 text-aqua">Orders</h2>
+            <ul className="list-disc list-inside text-aqua">
+              <li>Order #12345</li>
+              <li>Order #12346</li>
+              <li>Order #12347</li>
             </ul>
           </div>
           <div className="bg-base-200 p-4 rounded-lg shadow">
-            <h2 className="text-2xl font-bold mb-2">Notifications</h2>
-            <ul className="list-disc list-inside text-neutral">
-              <li>New customer feedback</li>
-              <li>Stock running low on item #123</li>
-              <li>Monthly performance review</li>
+            <h2 className="text-2xl font-bold mb-2 text-aqua">Inventory</h2>
+            <ul className="list-disc list-inside text-aqua">
+              <li>Item #123 - 50 units</li>
+              <li>Item #124 - 30 units</li>
+              <li>Item #125 - 20 units</li>
             </ul>
           </div>
         </div>
