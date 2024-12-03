@@ -84,7 +84,13 @@ export default function Login() {
               </label>
             </div>
           </div>
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+          {error && (
+            <div className="toast toast-top toast-center">
+              <div className="alert alert-error">
+                <span>{error}</span>
+              </div>
+            </div>
+          )}
           <div className="flex items-center justify-center">
             <button
               className="btn btn-primary w-full"

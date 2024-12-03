@@ -115,8 +115,20 @@ export default function Register() {
               </label>
             </div>
           </div>
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-          {success && <p className="text-green-500 text-sm mb-4">{success}</p>}
+          {error && (
+            <div className="toast toast-top toast-center">
+              <div className="alert alert-error">
+                <span>{error}</span>
+              </div>
+            </div>
+          )}
+          {success && (
+            <div className="toast toast-top toast-center">
+              <div className="alert alert-success">
+                <span>{success}</span>
+              </div>
+            </div>
+          )}
           <div className="flex items-center justify-center">
             <button
               className="btn btn-primary w-full"
@@ -128,7 +140,7 @@ export default function Register() {
         </form>
         <div className="mt-4 text-center">
           <p className="text-sm text-neutral">
-            Already have an account? <a href="/login" className="text-primary">Login</a>
+            Already have an account? <a href="/login" className="textarea-ghost"><b>Login</b></a>
           </p>
         </div>
       </div>
