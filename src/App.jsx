@@ -30,13 +30,18 @@ function App() {
 
         if (response.ok) {
           const data = await response.json();
-          const photoUrl = data.photo && data.photo.url ? `http://localhost:1337${data.photo.url}` : '';
+          const photoUrl = data.profile && data.profile.url ? `http://localhost:1337${data.profile.url}` : '';
           setIsLoggedIn(true);
           setUser({ 
             username: data.username, 
             photoUrl: photoUrl,
             email: data.email
           });
+          localStorage.setItem('user', JSON.stringify({
+            username: data.username,
+            email: data.email,
+            photoUrl: photoUrl
+          }));
         } else {
           console.error('Failed to fetch user data:', response.statusText);
           setIsLoggedIn(false);

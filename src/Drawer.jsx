@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function Drawer({ username, photoUrl, email }) {
-  const defaultPhotoUrl = '/assets/user.png';
-  const [user, setUser] = useState({ username: '', email: '', photoUrl: defaultPhotoUrl });
+  const defaultPhotoUrl = 'src/assets/user.png';
+  const [user, setUser] = useState({ username: 'Guest', email: '', photoUrl: defaultPhotoUrl });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user'));
@@ -15,6 +17,11 @@ export default function Drawer({ username, photoUrl, email }) {
     }
   }, []);
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/login');
+  };
+
   return (
     <div className="drawer drawer-end">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -25,7 +32,7 @@ export default function Drawer({ username, photoUrl, email }) {
         <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
         <ul className="menu bg-base-200 text-base-content min-h-full w-80 p-4">
           <li>
-            <img src={user.photoUrl} alt="Profile" className="w-16 h-16 rounded-full mx-auto" />
+            <img src={user.photoUrl} alt="Profile" className="w-24 h-24 rounded-full mx-auto object-cover" onError={(e) => { e.target.src = defaultPhotoUrl; }} />
           </li>
           <li>
             <span className="text-center block mt-2">{user.username}</span>
@@ -34,7 +41,7 @@ export default function Drawer({ username, photoUrl, email }) {
             <span className="text-center block mt-2">{user.email}</span>
           </li>
           <li>
-            <a href="/logout">Log out</a>
+            <button onClick={handleLogout} className="btn btn-danger w-full">Log out</button>
           </li>
         </ul>
       </div>
