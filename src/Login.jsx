@@ -6,11 +6,13 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
     try {
       const response = await fetch('http://localhost:1337/api/auth/local', {
@@ -54,6 +56,8 @@ export default function Login() {
       setTimeout(() => {
         setError('');
       }, 3000);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -110,9 +114,16 @@ export default function Login() {
             <button
               className="btn btn-secondary w-full"
               type="submit"
+              disabled={loading}
+              style={{
+                backgroundColor: loading ? '#6c757d' : '', // Set the background color for the disabled state
+                color: loading ? '#fff' : '', // Set the text color for the disabled state
+                cursor: loading ? 'not-allowed' : 'pointer', // Set the cursor for the disabled state
+              }}
             >
-              Login
+              {loading ? 'Logging in...' : 'Login'}
             </button>
+            {loading && <span className="loading-spinner"></span>}
           </div>
         </form>
         <div className="mt-4 text-center">
